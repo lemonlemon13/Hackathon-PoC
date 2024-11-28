@@ -1,5 +1,5 @@
-import Client
-import Server
+import Game_Files.Client as Client
+import Game_Files.Server as Server
 from _thread import *
 
 def server():
