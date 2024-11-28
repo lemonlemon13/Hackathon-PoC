@@ -1,0 +1,76 @@
+Red Team vs Blue Team
+Name: Hackathon
+
+General Story:
+International Intelligence Agencies around the world play CTF (or similar) with each other for practice and/or fun on proxy servers.
+
+Randomized Team Names:
+. ASIS  (Australia)
+. CSIS  (Canada)
+. DNRED (France)
+. BND   (Germany)
+. NZSIS (New Zealand)
+. GRU   (Russia)
+. NIS   (South Korea)
+. MI6   (United Kingdom)
+. CIA   (United States)
+
+Use Fake mariOS (like Kali Linux for Calimari joke) as interface to play the game.
+Features:
+. Text Editor (Memo)
+. Web Browser (Sparknet)
+. Mail (XMail)
+    - Send and Receive Mail
+. Chatroom (WorldzApart)
+    - Host Rooms
+    - Join Rooms
+    - Talk
+    - File Share
+. Terminal
+    - ping [domain/IP]
+    - reboot
+    - ssh [IP] (credentials may be asked later)
+    - exit
+    - rm [file]
+    - cd [directory]
+    - ls
+    - cat [file]
+    - netcat/nc [domain/IP] = Scan
+    - netcat/nc [domain/IP] [port] = Monitor
+    - hping3 [domain/IP] [--spoof newIP (optional)] [--flood] = IP Flooding with optional IP Spoofing
+    - decrypt [file] [--product, --des, --aes, --sha] [key (optional)]
+    - recrypt [file] [--product, --des, --aes, --sha] [key_file]
+    - pswdcrk [IP]
+    - sqlinject [domain/IP] = Gets all data from a DB (SELECT * FROM *)
+    - dnslookup [domain]
+    - scp [source] [destination] (e.g. /path/file from current connection to local machine)
+    - help
+
+Roles: Each Agency mostly prioritizes offense but can do some defense
+Server:
+    - Not a player, must be defended at all costs
+    Contains:
+        - IP and connected Web domain
+        - Public Website (HTML) = Tier 2
+        - Objective Data (Tiers 1, 2, and 3)
+        - Authentication Files (Hashed Encryption Keys for Data and RSA Keys, Authenticated IPs)
+        - OS Files
+
+Player PC:
+    - Search around the network using given tools and complete the objectives.
+    Contains:
+        - IP
+        - Program Files (netcat, hping3, etc.)
+        - OS Files
+        - Text Files
+        - RSA Key
+        - Username + Password Combo
+        - Email + Same Password
+
+Goals:
+Steal and Decrypt more Tiers of Data from the Opposing Team than were stolen from you by timeout.
+Objective Data Distribution:
+. Tier 1 = 10 Files =  5pts
+. Tier 2 =  5 Files = 10pts
+. Tier 3 =  3 Files = 15pts
+. Deleting any File = -5pts
