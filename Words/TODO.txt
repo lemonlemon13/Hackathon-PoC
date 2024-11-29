@@ -1,22 +1,22 @@
-v0.1.1 - Refactor Update
+v1.1 - Refactor Update
 [O] Flesh out the final plan for the game.
 [O] Figure out how to have the server find the computer's IP address for the room code
 [O] Refactor Server and Client
 [O] Add new file to merge Server/Client (Hackathon.py)
 
-v0.2.0 - GUI Update
+v2 - GUI Update
 [X] Add a basic GUI (mariOS) with functionless app icons
 
-v0.3.0 - Terminal Update I
+v3 - Terminal Update I
 [X] Add Terminal app and basic command functionality
 - reboot
 - help
 
-v0.4.0 - File System Update
+v4 - File System Update
 [X] Add backing File System to mariOS
 [X] Add default files to the File System on boot
 
-v0.5.0 - Terminal Update II
+v5 - Terminal Update II
 [X] Add commands related to the File System
 - rm
 - cd
@@ -25,22 +25,22 @@ v0.5.0 - Terminal Update II
 - cat
 - update help
 
-v0.6.0 - Text Editor Update
+v6 - Text Editor Update
 [X] Add the Text Editor app
 
-v0.7.0 - Internet Update
+v7 - Internet Update
 [X] Add IP and inter-computer interaction
 
-v0.8.0 - Chatting Update
+v8 - Chatting Update
 [X] Add the Chatroom app
 
-v0.9.0 - Mail Update
+v9 - Mail Update
 [X] Add the Mail app
 
-v0.10.0 - Web Browser Update
+v10 - Web Browser Update
 [X] Add the Web Browser app
 
-v0.11.0 - Hacking Update
+v11 - Hacking Update
 [X] Add the rest of the commands and associated program files
 - nc
 - hping3
@@ -51,10 +51,10 @@ v0.11.0 - Hacking Update
 - dnslookup
 - update help
 
-v0.12.0 - Competition Update
+v12 - Competition Update
 [X] Add the Team Server to the game
 [X] Add a scoreboard and timer to keep track of the winning team
 
-v1.0.0 - Launch
+vFinal - Launch
 [X] Minor Tweaks
 [X] Add anything else I missed

@@ -1,8 +1,10 @@
-v0.1.0 (21/11/2024): Hello, World!
+---RELEASED---
+
+v1 (21/11/2024): Hello, World!
 The first version. Wrote the code for the Clients/Server to talk to each other and connect via a generated room code. Not much else to say.
 Have a rough idea on what to develop this into but is prone to change.
 
-v0.1.1 (29/11/2024): Refactor Update
+v1.1 (29/11/2024): Refactor Update
 I've written a mock-up of what this project is going to become, but first some house keeping before getting started properly.
 
 Added:
@@ -12,3 +14,9 @@ Changed:
 - Server.py now gets the host's IP address by itself instead of it being manually inputted beforehand.
 - RoomCode class renamed to LobbyCode to avoid confusion for planned potential RoomCode class.
 - Refactored the Server and Client files to to be a tad more modular and make more sense to be called as functions.
+
+---BETA---
+
+v2-001 (30/11/2024): GUI Update
+Currently working on adding a GUI after hosting/joining a lobby via tkinter.
+Still in development, anything is subject to change, everything might be only in the Terminal.

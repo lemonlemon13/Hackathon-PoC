@@ -3,6 +3,7 @@ import time
 import os
 from _thread import *
 from Game_Files.CryptoTools import *
+from Game_Files.mariOS import *
 
 def sendmsg(skt: socket.socket, name:str):
     while True:
@@ -34,23 +35,27 @@ def new_client(code: str = None):
             name = input("Input Username (Max 16 Characters): ")
         (ip, port) = LobbyCode().CodeToAddr(code)
 
-    skt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    skt.connect((ip, port))
-    try:
-        skt.send(bytes(name.encode("utf-8")))
-    except ConnectionError as e:
-        print("Failed to connect to Server.")
-        exit
+    #skt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #skt.connect((ip, port))
 
-    print("Type \"--quit\" to leave the room.")
-    try:
-        start_new_thread(sendmsg, (skt,name,))
-        while True:
-            data = str(skt.recv(16*1024),encoding="utf-8")
-            os.system('cls')
-            print(data)
-    except ConnectionError as e:
-        print("Connect Lost with Server.")
+    # Create a window for mariOS's GUI
+    bootOS()
+    if False:
+        try:
+            skt.send(bytes(name.encode("utf-8")))
+        except ConnectionError as e:
+            print("Failed to connect to Server.")
+            exit
+
+        print("Type \"--quit\" to leave the room.")
+        try:
+            start_new_thread(sendmsg, (skt,name,))
+            while True:
+                data = str(skt.recv(16*1024),encoding="utf-8")
+                os.system('cls')
+                print(data)
+        except ConnectionError as e:
+            print("Connect Lost with Server.")
 
 if __name__ == "__main__":
     new_client()

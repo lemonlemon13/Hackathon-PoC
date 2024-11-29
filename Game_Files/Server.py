@@ -60,6 +60,7 @@ def host_server() -> str:
     roomCode = LobbyCode().AddrToCode(skt.getsockname()[0], skt.getsockname()[1])
     
     file = open("Game_Files/chatLog", "a")
+    print(f"Lobby Code: {roomCode}")
     file.write(f"Lobby Code: {roomCode}\n")
     file.close()
 
