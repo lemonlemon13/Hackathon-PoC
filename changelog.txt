@@ -1,8 +1,10 @@
----RELEASED---
+---MAJOR RELEASE---
 
 v1 (21/11/2024): Hello, World!
 The first version. Wrote the code for the Clients/Server to talk to each other and connect via a generated room code. Not much else to say.
 Have a rough idea on what to develop this into but is prone to change.
+
+---MINOR RELEASE---
 
 v1.1 (29/11/2024): Refactor Update
 I've written a mock-up of what this project is going to become, but first some house keeping before getting started properly.
@@ -18,5 +20,26 @@ Changed:
 ---BETA---
 
 v2-001 (30/11/2024): GUI Update
-Currently working on adding a GUI after hosting/joining a lobby via tkinter.
-Still in development, anything is subject to change, everything might be only in the Terminal.
+- Currently working on adding a GUI after hosting/joining a lobby via tkinter.
+- Still early in development, anything is subject to change, everything might be only in the Terminal.
+
+v2-002 (2/12/2024): GUI Update
+- Minor changes to versioning convention.
+- Added TODO list element to add a fake boot-up animation to mariOS.
+- Added Server Manager script to know what state the server is in and for potential easier connections between clients.
+- Removing plans for a text editor or web browser, they were too GUI-ey and I'm deciding to stick exclusively to the terminal.
+
+---UPDATE---
+
+v2 (?/??/????): GUI Update
+Added:
+???
+
+Changed:
+???
+
+Fixed:
+???
+
+Removed:
+???

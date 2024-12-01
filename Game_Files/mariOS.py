@@ -3,11 +3,9 @@ from enum import Enum
 from Game_Files.Client import *
 
 class runningApp(Enum):
-    TEXT = 0
-    WEB = 1
-    MAIL = 2
-    CHAT = 3
-    TERMINAL = 4
+    TERMINAL = 0
+    MAIL = 1
+    CHAT = 2
 
 class mari():
     def __init__(self, master: tk.Tk) -> None:

@@ -8,6 +8,5 @@ servers, and decrypt stolen data to navigate and
 abuse a virtual network better than your opponents.
 
 
-The game is currently at version 0.1.1 and very
-early in development (there isn't even a GUI yet
-it's just a chat room right now).
+The game is currently at version 1.1 and very
+early in development so things are prone to change.

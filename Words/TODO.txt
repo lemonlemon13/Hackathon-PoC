@@ -5,7 +5,8 @@ v1.1 - Refactor Update
 [O] Add new file to merge Server/Client (Hackathon.py)
 
 v2 - GUI Update
-[X] Add a basic GUI (mariOS) with functionless app icons
+[O] Add a basic GUI (mariOS) representing the OS's terminal
+[X] Add a terminal boot animation
 
 v3 - Terminal Update I
 [X] Add Terminal app and basic command functionality
