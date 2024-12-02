@@ -1,3 +1,7 @@
+#
+# This script handles the GUI for clients, which communicates with Server.py
+#
+
 import tkinter as tk
 from enum import Enum
 from Game_Files.Client import *
@@ -10,6 +14,7 @@ class runningApp(Enum):
 class mari():
     def __init__(self, master: tk.Tk) -> None:
         self._root = master
+        self._curproc = runningApp.TERMINAL
         master.title("[HACKATHON]")
         master.maxsize(480, 360)
         master.minsize(480, 360)

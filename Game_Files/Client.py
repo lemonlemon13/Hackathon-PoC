@@ -1,9 +1,14 @@
+#
+# This script handles the networking for the clients sending requests to the server.
+#
+
 import socket
 import time
 import os
 from _thread import *
 from Game_Files.CryptoTools import *
 from Game_Files.mariOS import *
+from Game_Files.NetworkArch import *
 
 def sendmsg(skt: socket.socket, name:str):
     while True:
@@ -35,12 +40,12 @@ def new_client(code: str = None):
             name = input("Input Username (Max 16 Characters): ")
         (ip, port) = LobbyCode().CodeToAddr(code)
 
-    #skt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #skt.connect((ip, port))
+    skt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    skt.connect((ip, port))
 
-    # Create a window for mariOS's GUI
-    bootOS()
-    if False:
+    gameStarted = False
+
+    while not gameStarted:
         try:
             skt.send(bytes(name.encode("utf-8")))
         except ConnectionError as e:
@@ -50,12 +55,18 @@ def new_client(code: str = None):
         print("Type \"--quit\" to leave the room.")
         try:
             start_new_thread(sendmsg, (skt,name,))
-            while True:
+            while not gameStarted:
                 data = str(skt.recv(16*1024),encoding="utf-8")
+                if data == "":
+                    gameStarted = True
+                    break
                 os.system('cls')
                 print(data)
         except ConnectionError as e:
             print("Connect Lost with Server.")
+
+    # Create a window for mariOS's GUI
+    bootOS()
 
 if __name__ == "__main__":
     new_client()

@@ -1,3 +1,6 @@
+# 
+# The main script for playing the game, run this if you want to play it.
+#
 import Game_Files.Client as Client
 import Game_Files.Server as Server
 from _thread import *

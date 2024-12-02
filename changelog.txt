@@ -29,6 +29,11 @@ v2-002 (2/12/2024): GUI Update
 - Added Server Manager script to know what state the server is in and for potential easier connections between clients.
 - Removing plans for a text editor or web browser, they were too GUI-ey and I'm deciding to stick exclusively to the terminal.
 
+v2-003 (3/12/2024): GUI Update
+- Added short descriptions for each script
+- Added NetworkArch.py for data types used by both Servers and Clients
+- Still working on stuff (mostly pre-game lobby)
+
 ---UPDATE---
 
 v2 (?/??/????): GUI Update

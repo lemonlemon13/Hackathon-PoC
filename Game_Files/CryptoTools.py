@@ -1,3 +1,6 @@
+#
+# This script handles Cryptographic Functions and translating server IP/ports into a Lobby Code.
+#
 
 class LobbyCode():
 

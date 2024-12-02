@@ -1,9 +1,7 @@
-from enum import Enum
-
-class ServerState(Enum):
-    PREGAME = 0
-    INGAME = 1
-    POSTGAME = 2
+#
+# This script is for handling details about the game and the server's state.
+#
 
 class ServerManager():
-    pass
+    def __init__(self) -> None:
+        pass

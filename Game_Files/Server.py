@@ -1,8 +1,13 @@
+#
+# This script handles the networking for handling requests from clients and sending responses to them.
+#
+
 import socket
 from _thread import *
 from Game_Files.CryptoTools import *
 from Game_Files.Server_Manager import *
 import time
+from Game_Files.NetworkArch import *
 
 def manage_server(skt: socket.socket):
     skt.listen(16)
