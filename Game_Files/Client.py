@@ -18,12 +18,14 @@ def sendmsg(skt: socket.socket, name:str):
                 skt.close()
                 break
             now = time.strftime("%d %b %Y %I:%M %p")
-            msg = f"({now}) {name}: {userIn}"
-            if len(msg) > 2048:
+            cmd = f"({now}) {name}: {userIn}"
+            msg = GameMsg()
+            msg.prepare(name, msgType.REQUEST, cmd)
+            if len(msg.send()) > 2048:
                 print("Failed to Send. Message Too Long.")
                 continue
             if userIn != "":
-                skt.send(bytes(msg.encode("utf-8")))
+                skt.send(bytes(msg.send().encode("utf-8")))
         except ConnectionError as e:
             print("Connect Lost with Server.")
             exit
@@ -31,12 +33,14 @@ def sendmsg(skt: socket.socket, name:str):
 def new_client(code: str = None):
     if code is None:
         name = input("Input Username (Max 16 Characters): ")
-        while len(name) > 16:
+        while len(name) > 16 or len(name) == 0 or name.find(":") != 1 or name == "SERVER":
+            print("INVALID USERNAME")
             name = input("Input Username (Max 16 Characters): ")
         (ip, port) = LobbyCode().CodeToAddr(input("Enter Lobby Code(e.g. ABCD-EFGH): "))
     else:
         name = input("Input Username (Max 16 Characters): ")
-        while len(name) > 16:
+        while len(name) > 16 or len(name) == 0 or name.find(":") != 1 or name == "SERVER":
+            print("INVALID USERNAME")
             name = input("Input Username (Max 16 Characters): ")
         (ip, port) = LobbyCode().CodeToAddr(code)
 
@@ -44,6 +48,7 @@ def new_client(code: str = None):
     skt.connect((ip, port))
 
     gameStarted = False
+    message = GameMsg()
 
     while not gameStarted:
         try:

@@ -33,8 +33,10 @@ def manage_chat(c: socket.socket, user: str):
         try:
             data = c.recv(2048)
             msg = str(data,encoding="utf-8") + "\n"
+            msgin = GameMsg()
+            msgin.recv(msg)
             file = open("Game_Files/chatLog", "a")
-            file.write(msg)
+            file.write(msgin.getcmd())
             file.close()
         except ConnectionError as e:
             file = open("Game_Files/chatLog", "a")

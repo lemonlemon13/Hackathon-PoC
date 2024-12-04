@@ -26,22 +26,16 @@ v5 - Terminal Update II
 - cat
 - update help
 
-v6 - Text Editor Update
-[X] Add the Text Editor app
-
-v7 - Internet Update
+v6 - Internet Update
 [X] Add IP and inter-computer interaction
 
-v8 - Chatting Update
+v7 - Chatting Update
 [X] Add the Chatroom app
 
-v9 - Mail Update
-[X] Add the Mail app
-
-v10 - Web Browser Update
+v8 - Web Browser Update
 [X] Add the Web Browser app
 
-v11 - Hacking Update
+v9 - Hacking Update
 [X] Add the rest of the commands and associated program files
 - nc
 - hping3
@@ -52,7 +46,7 @@ v11 - Hacking Update
 - dnslookup
 - update help
 
-v12 - Competition Update
+v10 - Competition Update
 [X] Add the Team Server to the game
 [X] Add a scoreboard and timer to keep track of the winning team
 

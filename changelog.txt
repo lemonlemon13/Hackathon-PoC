@@ -30,9 +30,16 @@ v2-002 (2/12/2024): GUI Update
 - Removing plans for a text editor or web browser, they were too GUI-ey and I'm deciding to stick exclusively to the terminal.
 
 v2-003 (3/12/2024): GUI Update
-- Added short descriptions for each script
-- Added NetworkArch.py for data types used by both Servers and Clients
-- Still working on stuff (mostly pre-game lobby)
+- Added short descriptions for each script.
+- Added NetworkArch.py for data types used by both Servers and Clients.
+- Still working on stuff (mostly pre-game lobby).
+
+v2-004 (5/12/2024): GUI Update
+- Minor Tweaks to the TODO List to remove scrapped content.
+- Specifying new types of messages (for the PreGame chat and for new clients).
+- Added a RNG() class to CryptoTools.py that will handle generating random numbers.
+- Added something at all to ServerManager.py.
+- Started to rewrite parts of Server.py and Client.py to incorporate the GameMsg class.
 
 ---UPDATE---
 

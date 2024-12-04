@@ -7,7 +7,9 @@ from enum import Enum
 class msgType(Enum):
     REQUEST = 0 # From client to server
     RESPONSE = 1 # From server to individual client
-    ALERT = 2 # From server to all clients
+    PREGAME = 2 # For clients in pregame chatting
+    ALERT = 3 # From server to all clients
+    NEW = 4 # For new clients
 
 class GameMsg():
     def __init__(self) -> None:
@@ -44,7 +46,9 @@ class GameMsg():
 
 GAMESTART = GameMsg()
 GAMESTART.prepare("SERVER", msgType.ALERT, "start") # Message to say game is starting
+
 GAMEEND = GameMsg()
 GAMEEND.prepare("SERVER", msgType.ALERT, "end") # Message to say game has ended
+
 GAMECLOSE = GameMsg()
 GAMECLOSE.prepare("SERVER", msgType.ALERT, "close") # Message to say lobby is closing

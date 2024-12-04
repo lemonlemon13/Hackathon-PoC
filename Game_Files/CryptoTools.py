@@ -1,5 +1,5 @@
 #
-# This script handles Cryptographic Functions and translating server IP/ports into a Lobby Code.
+# This script handles Cryptographic Functions, translating server IP/ports into a Lobby Code, and other functions.
 #
 
 class LobbyCode():
@@ -71,3 +71,36 @@ class LobbyCode():
         for c in file.read():
             mapping.append(c)
         return mapping
+    
+class RNG():
+    def __init__(self, seed:int | None) -> None:
+        if seed is not None:
+            self._seed = seed
+        else:
+            self._seed = 0
+        self._cur = self._seed
+        self.MAX = (2 ** 32)
+
+    def set_from_code(self, code:str) -> None:
+        temp = 0
+        for c in code:
+            num = ord(c)
+            temp |= num
+            temp = 3 * temp + 1
+            temp = temp % self.MAX
+        self._seed = temp
+        self._cur = temp
+
+    def next(self) -> int:
+        self._cur = (13 * self._cur + 7) % self.MAX
+        return self._cur
+    
+    def reset(self) -> None:
+        self._cur = self._seed
+
+    def next_range(self, min:int, max:int) -> int:
+        """
+        Returns the next random number from min (inclusive) to max (inclusive).
+        NOTE: The range will be from min (inclusive) to max (exclusive) is min = 0.
+        """
+        return (self.next() % max) + min
