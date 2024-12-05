@@ -9,23 +9,25 @@ from Game_Files.Server_Manager import *
 import time
 from Game_Files.NetworkArch import *
 
-def manage_server(skt: socket.socket):
+def manage_server(skt: socket.socket, mngr: ServerManager):
     skt.listen(16)
     while True:
         c, addr1 = skt.accept()
         try:
-            name = str(c.recv(16), encoding="utf-8")
-            file = open("Game_Files/chatLog", "a")
+            m = GameMsg()
+            m.recv(str(c.recv(64), encoding="utf-8"))
+            name = m.getcmd()
+            file = open("Game_Files/preGameLog", "a")
             file.write(f"{name} joined the Room.\n")
             file.close()
         except ConnectionError as e:
-            file = open("Game_Files/chatLog", "a")
+            file = open("Game_Files/preGameLog", "a")
             file.write(f"{name} left the Room.\n")
             file.close()
-        start_new_thread(manage_chat, (c,name,))
+        start_new_thread(manage_chat, (c,name,mngr,))
     skt.close()
 
-def manage_chat(c: socket.socket, user: str):
+def manage_chat(c: socket.socket, user: str, mngr: ServerManager):
     last_line = ""
     old_count = 0
     c.setblocking(False)
@@ -35,16 +37,16 @@ def manage_chat(c: socket.socket, user: str):
             msg = str(data,encoding="utf-8") + "\n"
             msgin = GameMsg()
             msgin.recv(msg)
-            file = open("Game_Files/chatLog", "a")
+            file = open("Game_Files/preGameLog", "a")
             file.write(msgin.getcmd())
             file.close()
         except ConnectionError as e:
-            file = open("Game_Files/chatLog", "a")
+            file = open("Game_Files/preGameLog", "a")
             file.write(f"{user} left the Room.\n")
             file.close()
             break
         except BlockingIOError as e:
-            file = open("Game_Files/chatLog", "r")
+            file = open("Game_Files/preGameLog", "r")
             line = ""
             count = 0
             for l in file:
@@ -53,9 +55,11 @@ def manage_chat(c: socket.socket, user: str):
             if last_line != line or old_count != count:
                 last_line = line
                 old_count = count
-                fbin = open("Game_Files/chatLog", "b+r")
+                fbin = open("Game_Files/preGameLog", "b+r")
                 c.setblocking(True)
-                c.sendfile(fbin)
+                m = GameMsg()
+                m.prepare("SERVER", msgType.ALERT, fbin.read().decode("utf-8"))
+                c.send(bytes(m.send().encode("utf-8")))
                 c.setblocking(False)
                 fbin.close()
             file.close()
@@ -66,13 +70,14 @@ def host_server() -> str:
     host_ip = socket.gethostbyname(socket.gethostname())
     skt.bind((host_ip, 0))
     roomCode = LobbyCode().AddrToCode(skt.getsockname()[0], skt.getsockname()[1])
+    manager = ServerManager(roomCode)
     
-    file = open("Game_Files/chatLog", "a")
+    file = open("Game_Files/preGameLog", "a")
     print(f"Lobby Code: {roomCode}")
     file.write(f"Lobby Code: {roomCode}\n")
     file.close()
 
-    start_new_thread(manage_server, (skt,))
+    start_new_thread(manage_server, (skt,manager,))
 
     return roomCode
 

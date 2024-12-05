@@ -73,7 +73,7 @@ class LobbyCode():
         return mapping
     
 class RNG():
-    def __init__(self, seed:int | None) -> None:
+    def __init__(self, seed:int = None) -> None:
         if seed is not None:
             self._seed = seed
         else:

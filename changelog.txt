@@ -41,6 +41,11 @@ v2-004 (5/12/2024): GUI Update
 - Added something at all to ServerManager.py.
 - Started to rewrite parts of Server.py and Client.py to incorporate the GameMsg class.
 
+v2-005 (6/12/2024): GUI Update
+- Finished re-writing enough to make the pre-game chat work again. Still need to add ServerManager class functionality.
+- chatLog renamed to preGameLog.
+- Fixed a bug regarding the RNG class requiring a seed instead of having None as a default.
+
 ---UPDATE---
 
 v2 (?/??/????): GUI Update
