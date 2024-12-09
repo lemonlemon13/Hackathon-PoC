@@ -46,17 +46,22 @@ v2-005 (6/12/2024): GUI Update
 - chatLog renamed to preGameLog.
 - Fixed a bug regarding the RNG class requiring a seed instead of having None as a default.
 
----UPDATE---
+v2-X (10/12/2024): GUI Update
+- Added functionality to allow the host of the server (the first person that joins) to be able to start the game which will open the GUI interface and stop the pregame chat.
+- Added a boot animation when the given command is 'reboot'
 
-v2 (?/??/????): GUI Update
+---MAJOR RELEASE---
+
+v2 (10/12/2024): GUI Update
+First real update, now there's a GUI to actually play the game with the existing parts becoming the pre-game lobby chat.
+Please see the above BETA release notes for more details.
+
 Added:
-???
+- A GUI for mariOS, the primary interface for the game.
 
 Changed:
-???
-
-Fixed:
-???
+- Major refactoring for the Networking side of the game.
+- Chat room has become the pre-game lobby.
 
 Removed:
-???
+- Some plans have been scrapped.

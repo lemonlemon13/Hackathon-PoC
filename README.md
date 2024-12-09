@@ -8,5 +8,5 @@ servers, and decrypt stolen data to navigate and
 abuse a virtual network better than your opponents.
 
 
-The game is currently at version 1.1 and very
+The game is currently at version 2 and very
 early in development so things are prone to change.

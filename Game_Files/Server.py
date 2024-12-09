@@ -20,6 +20,7 @@ def manage_server(skt: socket.socket, mngr: ServerManager):
             file = open("Game_Files/preGameLog", "a")
             file.write(f"{name} joined the Room.\n")
             file.close()
+            mngr.add_player(name)
         except ConnectionError as e:
             file = open("Game_Files/preGameLog", "a")
             file.write(f"{name} left the Room.\n")
@@ -32,11 +33,14 @@ def manage_chat(c: socket.socket, user: str, mngr: ServerManager):
     old_count = 0
     c.setblocking(False)
     while True:
+        rememberStarted = False
         try:
             data = c.recv(2048)
             msg = str(data,encoding="utf-8") + "\n"
             msgin = GameMsg()
             msgin.recv(msg)
+            if msgin.getsrc() == mngr.get_host() and msgin.getcmd()[-8:-1] == "--start":
+                mngr.start_game()
             file = open("Game_Files/preGameLog", "a")
             file.write(msgin.getcmd())
             file.close()
@@ -46,22 +50,28 @@ def manage_chat(c: socket.socket, user: str, mngr: ServerManager):
             file.close()
             break
         except BlockingIOError as e:
-            file = open("Game_Files/preGameLog", "r")
-            line = ""
-            count = 0
-            for l in file:
-                line = l
-                count += 1
-            if last_line != line or old_count != count:
-                last_line = line
-                old_count = count
-                fbin = open("Game_Files/preGameLog", "b+r")
+            if not mngr._started:
+                file = open("Game_Files/preGameLog", "r")
+                line = ""
+                count = 0
+                for l in file:
+                    line = l
+                    count += 1
+                if last_line != line or old_count != count:
+                    last_line = line
+                    old_count = count
+                    fbin = open("Game_Files/preGameLog", "b+r")
+                    c.setblocking(True)
+                    m = GameMsg()
+                    m.prepare("SERVER", msgType.ALERT, fbin.read().decode("utf-8"))
+                    c.send(bytes(m.send().encode("utf-8")))
+                    c.setblocking(False)
+                    fbin.close()
+            elif not rememberStarted:
+                rememberStarted = True
                 c.setblocking(True)
-                m = GameMsg()
-                m.prepare("SERVER", msgType.ALERT, fbin.read().decode("utf-8"))
-                c.send(bytes(m.send().encode("utf-8")))
+                c.send(bytes(GAMESTART.send().encode("utf-8")))
                 c.setblocking(False)
-                fbin.close()
             file.close()
             time.sleep(0.1)
 
@@ -72,7 +82,7 @@ def host_server() -> str:
     roomCode = LobbyCode().AddrToCode(skt.getsockname()[0], skt.getsockname()[1])
     manager = ServerManager(roomCode)
     
-    file = open("Game_Files/preGameLog", "a")
+    file = open("Game_Files/preGameLog", "w")
     print(f"Lobby Code: {roomCode}")
     file.write(f"Lobby Code: {roomCode}\n")
     file.close()

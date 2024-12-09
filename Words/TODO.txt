@@ -6,12 +6,12 @@ v1.1 - Refactor Update
 
 v2 - GUI Update
 [O] Add a basic GUI (mariOS) representing the OS's terminal
-[X] Add a terminal boot animation
+[O] Add a terminal boot animation
 
 v3 - Terminal Update I
 [X] Add Terminal app and basic command functionality
-- reboot
-- help
+- reboot [O]
+- help [X]
 
 v4 - File System Update
 [X] Add backing File System to mariOS

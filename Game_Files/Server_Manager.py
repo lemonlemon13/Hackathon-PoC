@@ -10,6 +10,8 @@ class ServerManager():
         self._players = []
         self._uninames = {}
 
+        self._started = False
+
         self._IPs = []
         self._teamA_IP = ""
         self._teamB_IP = ""
@@ -39,6 +41,7 @@ class ServerManager():
         return self._host_name
 
     def start_game(self) -> None:
+        self._started = True
         for i in range(0, len(self._players)):
             # Generate in-game IPs for them to use
             pass
