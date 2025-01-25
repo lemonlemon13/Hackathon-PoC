@@ -65,3 +65,13 @@ Changed:
 
 Removed:
 - Some plans have been scrapped.
+
+---BETA---
+
+v3-001 (26/01/2025): Terminal + File System Update
+After a "quick" break I've started development beck up again.
+
+- Added Caesar Cipher Class (untested)
+- Added Skeletion for ZigZag Cipher Class
+- Minor changes to plans
+- Added help command functionality

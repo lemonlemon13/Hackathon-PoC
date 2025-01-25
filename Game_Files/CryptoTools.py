@@ -104,3 +104,37 @@ class RNG():
         NOTE: The range will be from min (inclusive) to max (exclusive) is min = 0.
         """
         return (self.next() % max) + min
+    
+class CaesarCipher():
+
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+    def encrypt(self, pt: str, key: int) -> str:
+        ct = ""
+        pt = pt.upper()
+        for c in pt:
+            new = c
+            i = self.alphabet.find(c)
+            if i != -1:
+                new = self.alphabet[(i + key) % 26]
+            ct += new
+        return ct
+    
+    def decrypt(self, ct: str, key: int) -> str:
+        pt = ""
+        ct = ct.upper()
+        for c in ct:
+            new = c
+            i = self.alphabet.find(c)
+            if i != -1:
+                new = self.alphabet[(i - key) % 26]
+            pt += new
+        return pt
+    
+class ZigZagCipher():
+
+    def encrypt(self, ct: str, key: int) -> str:
+        pass
+
+    def decrypt(self, pt: str, key: int) -> str:
+        pass

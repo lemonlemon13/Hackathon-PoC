@@ -35,12 +35,10 @@ Features:
     - cd [directory]
     - ls
     - cat [file]
-    - netcat/nc [domain/IP] = Scan
     - netcat/nc [domain/IP] [port] = Monitor
-    - hping3 [domain/IP] [--spoof newIP (optional)] [--flood] = IP Flooding with optional IP Spoofing
+    - hping3 [domain/IP] [--flood] = IP Flooding
     - decrypt [file] [--product, --des, --aes, --sha] [key (optional)]
-    - recrypt [file] [--product, --des, --aes, --sha] [key_file]
-    - pswdcrk [IP]
+    - pwdck [IP]
     - sqlinject [domain/IP] = Gets all data from a DB (SELECT * FROM *)
     - dnslookup [domain]
     - scp [source] [destination] (e.g. /path/file from current connection to local machine)

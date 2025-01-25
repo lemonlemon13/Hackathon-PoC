@@ -8,16 +8,12 @@ v2 - GUI Update
 [O] Add a basic GUI (mariOS) representing the OS's terminal
 [O] Add a terminal boot animation
 
-v3 - Terminal Update I
-[X] Add Terminal app and basic command functionality
+v3 - Terminal + File System Update
+[O] Add Terminal app and basic command functionality
 - reboot [O]
-- help [X]
-
-v4 - File System Update
+- help [O]
 [X] Add backing File System to mariOS
 [X] Add default files to the File System on boot
-
-v5 - Terminal Update II
 [X] Add commands related to the File System
 - rm
 - cd
@@ -26,16 +22,16 @@ v5 - Terminal Update II
 - cat
 - update help
 
-v6 - Internet Update
+v4 - Internet Update
 [X] Add IP and inter-computer interaction
 
-v7 - Chatting Update
+v5 - Chatting Update
 [X] Add the Chatroom app
 
-v8 - Web Browser Update
+v6 - Web Browser Update
 [X] Add the Web Browser app
 
-v9 - Hacking Update
+v7 - Hacking Update
 [X] Add the rest of the commands and associated program files
 - nc
 - hping3
@@ -46,7 +42,7 @@ v9 - Hacking Update
 - dnslookup
 - update help
 
-v10 - Competition Update
+v8 - Competition Update
 [X] Add the Team Server to the game
 [X] Add a scoreboard and timer to keep track of the winning team
 

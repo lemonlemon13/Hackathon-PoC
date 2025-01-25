@@ -11,6 +11,23 @@ BOOT_TEXT = ["Loading Boot Sector", "Running Boot Program", "Starting Kernel", "
              "Locating Disk Image", "Mounting File System", "Initialising Network Connections", "Preparing Drivers",
              "Preparing I/O Drivers", "Preparing System", "BOOT COMPLETE"]
 
+HELP_TEXT = ["ping [IP] | Pings the given IP to confirm it exists.\n",
+             "reboot | Restart the virtual machine.\n",
+             "ssh [IP] | Connects to the given IP. Further credentials may be required.\n",
+             "exit | Leave a connected machine.\n",
+             "rm [name] | Deletes the given file name.\n",
+             "cd [dir] | Change the working directory to the given path.\n",
+             "ls | List all files in the given directory.\n",
+             "cat [file] | Read the contents of the given file.\n",
+             "nc [IP] [port] | Monitor incoming and outgoing traffic from the given IP address and port.\n",
+             "hping3 [IP] --flood | Flood the target IP in a DoS Attack.\n",
+             "decrypt [file] [--cipher_type] [key] | Decrypts the file using the known key.\n",
+             "pwdck [IP] | Password cracker tool targeting the given IP.\n",
+             "sqlinject [IP] | Collect any SQL Databases present from the target.\n",
+             "dnslookup [Domain] | Get the IP address associated with the given Domain.\n",
+             "scp [src] [dst] | Copy the source file to the destination path on the local machine.",
+             "help | View this text."]
+
 class runningApp(Enum):
     TERMINAL = 0
     MAIL = 1
@@ -30,6 +47,7 @@ class mari():
         self.text = tk.Label(opsys, bg="black", fg="white", anchor="sw", justify="left", width=480, text="Virtual Machine Powered Off\n")
         self.indent.pack(side="left", anchor="sw")
         self.line.pack(side="bottom", fill="x")
+        self.line.focus_set()
         self.text.pack(side="top", fill="both", padx=0, anchor="w")
 
         master.bind('<Return>', self.handle_key)
@@ -50,12 +68,20 @@ class mari():
                     self.text.config(text="", anchor="w")
                     self.play_boot_anim()
                     self._powered = True
+                case _:
+                    self.text.config(text=self.cutText(self.text['text'] +
+                        f"Error: command \'{command}\' not found.\n" +
+                        "Please use \'reboot\' to start the virtual machine.\n"), anchor="w")
         else:
             match (commandList[0]):
                 case "reboot":
+                    self._powered = False
                     self.text.config(text="", anchor="w")
                     self.play_boot_anim()
                     self._powered = True
+                case "help":
+                    for x in HELP_TEXT:
+                        output += x
             # Update the terminal output
             newstr = self.text['text'] + "> " + command + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
@@ -91,5 +117,7 @@ class mari():
 
 def bootOS():
     root = tk.Tk()
+    root.lift()
+    root.attributes("-topmost", True)
     mari(root)
     root.mainloop()
