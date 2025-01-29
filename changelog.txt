@@ -75,3 +75,7 @@ After a "quick" break I've started development beck up again.
 - Added Skeletion for ZigZag Cipher Class
 - Minor changes to plans
 - Added help command functionality
+
+v3-002 (29/01/2025): Terminal + File System Update
+- Added ZigZag Cipher, Product Cipher, and Hash Classes
+- Added currently empty IP, username, and password fields to the mariOS instance

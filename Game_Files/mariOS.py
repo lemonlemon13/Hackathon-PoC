@@ -36,8 +36,13 @@ class runningApp(Enum):
 class mari():
     def __init__(self, master: tk.Tk) -> None:
         self._root = master
+
         self._curproc = runningApp.TERMINAL
         self._powered = False
+        self._ip = ""
+        self._username = ""
+        self._password = ""
+
         master.title("[HACKATHON]")
         master.maxsize(480, 360)
         master.minsize(480, 360)

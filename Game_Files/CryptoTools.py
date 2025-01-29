@@ -133,8 +133,41 @@ class CaesarCipher():
     
 class ZigZagCipher():
 
-    def encrypt(self, ct: str, key: int) -> str:
-        pass
+    def encrypt(self, pt: str, key: int) -> str:
+        ct = ""
 
-    def decrypt(self, pt: str, key: int) -> str:
-        pass
+        for i in range(0, key):
+            x = i
+            while x < len(pt):
+                ct += pt[x]
+                x += key
+        return ct
+
+    def decrypt(self, ct: str, key: int) -> str:
+        pt = ""
+        steps = len(ct) // key
+
+        for i in range(0, steps):
+            x = i
+            while x < len(pt):
+                ct += pt[x]
+                x += steps
+        return pt
+
+class ProductCipher():
+
+    def encrypt(self, pt: str, key: int) -> str:
+        return ZigZagCipher.encrypt(CaesarCipher.encrypt(pt, key), key)
+
+    def decrypt(self, ct: str, key: int) -> str:
+        return ZigZagCipher.decrypt(CaesarCipher.decrypt(ct, key), key)
+
+class Hasher():
+
+    def hash_string(i: str) -> int:
+        ans = 1
+        for c in i:
+            x = ord(c)
+            ans = (x * ans) + 1
+            ans = (ans << 1) ^ (ans >> 1)
+            return ans % (2**32)
