@@ -79,3 +79,8 @@ After a "quick" break I've started development beck up again.
 v3-002 (29/01/2025): Terminal + File System Update
 - Added ZigZag Cipher, Product Cipher, and Hash Classes
 - Added currently empty IP, username, and password fields to the mariOS instance
+
+v3-003 (02/02/2025): Terminal + File System Update
+- Added more set-up for match IPs
+- Added log-in to mariOS 
+- Added account set-up when rebooting for the first time

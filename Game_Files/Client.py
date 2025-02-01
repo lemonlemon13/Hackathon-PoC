@@ -50,6 +50,7 @@ def new_client(code: str = None):
 
     gameStarted = False
     quit_game = False
+    ip = ""
 
     while not gameStarted:
         message = GameMsg()
@@ -81,7 +82,7 @@ def new_client(code: str = None):
 
     # Create a window for mariOS's GUI
     if not quit_game:
-        bootOS()
+        bootOS(ip)
 
 if __name__ == "__main__":
     new_client()

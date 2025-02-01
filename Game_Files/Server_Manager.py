@@ -12,15 +12,19 @@ class ServerManager():
 
         self._started = False
 
-        self._IPs = []
-        self._teamA_IP = ""
-        self._teamB_IP = ""
-        self._teamA_Server_IP = ""
-        self._teamB_Server_IP = ""
-
         self._joincode = code
         self._rng = RNG()
         self._rng.set_from_code(code)
+
+        # Dictionary connecting player names in _players to IPs
+        self._IPs = {}
+        # Set up important IPs for the game
+        self._teamA_IP_prefix = ""
+        self._teamB_IP_prefix = ""
+        self._teamA_Server_IP = ""
+        self._teamB_Server_IP = ""
+        self._teamA_players = []
+        self._teamB_players = []
 
     def add_player(self, name:str) -> None:
         if name not in self._players:

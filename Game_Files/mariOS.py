@@ -34,14 +34,21 @@ class runningApp(Enum):
     CHAT = 2
 
 class mari():
-    def __init__(self, master: tk.Tk) -> None:
+    def __init__(self, master: tk.Tk, ip: str) -> None:
         self._root = master
 
         self._curproc = runningApp.TERMINAL
         self._powered = False
-        self._ip = ""
+        self._logIn = 0
+        self._firstIn = True
+
+        self._ip = ip
         self._username = ""
         self._password = ""
+
+        self._proxy_ip = ""
+        self._proxy_username = ""
+        self._proxy_password = ""
 
         master.title("[HACKATHON]")
         master.maxsize(480, 360)
@@ -68,6 +75,7 @@ class mari():
         newstr = ""
 
         if not self._powered:
+            # Turn on the VM
             match (commandList[0]):
                 case "reboot":
                     self.text.config(text="", anchor="w")
@@ -77,22 +85,69 @@ class mari():
                     self.text.config(text=self.cutText(self.text['text'] +
                         f"Error: command \'{command}\' not found.\n" +
                         "Please use \'reboot\' to start the virtual machine.\n"), anchor="w")
+        elif self._logIn == 0:
+            # Enter Username
+            if len(command) > 16 or len(command) == 0 or command.find(":") != -1:
+                output = "Invalid Username\n"
+            elif self._firstIn:
+                # Setting Username
+                output = "Enter Password:\n"
+                self._username = command
+                self._logIn += 1
+            elif command == self._username:
+                # Correct Username
+                output = "Enter Password:\n"
+                self._logIn += 1
+            else:
+                # Wrong Username
+                output = "Incorrect Username\n"
+            newstr = self.text['text'] + "> " + command + "\n" + output + ("" if output == "" else "\n")
+            newstr = self.cutText(newstr)
+            self.text.config(text=newstr, anchor="w")
+        elif self._logIn == 1:
+            # Enter Password
+            if len(command) > 16 or len(command) == 0 or command.find(":") != -1:
+                output = "Invalid Password\n"
+            elif self._firstIn:
+                # Setting Password
+                output = f"Welcome, {self._username}.\n"
+                self._password = command
+                self._logIn += 1
+                self._firstIn = False
+            elif command == self._password:
+                # Correct Password
+                output = f"Welcome, {self._username}.\n"
+                self._logIn += 1
+            else:
+                # Wrong Password
+                output = "Incorrect Password\n"
+            newstr = self.text['text'] + "> " + command + "\n" + output + ("" if output == "" else "\n")
+            newstr = self.cutText(newstr)
+            self.text.config(text=newstr, anchor="w")
         else:
-            match (commandList[0]):
-                case "reboot":
-                    self._powered = False
-                    self.text.config(text="", anchor="w")
-                    self.play_boot_anim()
-                    self._powered = True
-                case "help":
-                    for x in HELP_TEXT:
-                        output += x
+            if self._curproc == runningApp.TERMINAL:
+                match (commandList[0]):
+                    case "reboot":
+                        self._powered = False
+                        self.text.config(text="", anchor="w")
+                        self.play_boot_anim()
+                        self._powered = True
+                    case "help":
+                        for x in HELP_TEXT:
+                            output += x
+            elif self._curproc == runningApp.CHAT:
+                pass
+            elif self._curproc == runningApp.MAIL:
+                pass
+            else:
+                output = "Something has gone VERY wrong.\n"
             # Update the terminal output
             newstr = self.text['text'] + "> " + command + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
             self.text.config(text=newstr, anchor="w")
 
     def play_boot_anim(self) -> None:
+        self._logIn = 0
         s = ""
         timer = 0
         for i in range(0, 101):
@@ -105,6 +160,13 @@ class mari():
                 self._root.after(timer, self.setText, s)
                 timer += 50
         self._root.after(7500, self.setText, "Virtual Machine Powered On\n")
+        if self._firstIn:
+            self._root.after(8500, self.setText, "First Log In Detected\n" +
+            "Account Set-Up Required\n" +
+            "Enter Username:\n")
+        else:
+            self._root.after(8500, self.setText, f"Current IP Address: {self._ip}\n" +
+            "Enter Username:\n")
     
     def setText(self, s) -> None:
         self.text.config(text=s, anchor="w")
@@ -120,9 +182,9 @@ class mari():
             index -= 1
         return s
 
-def bootOS():
+def bootOS(ip: str):
     root = tk.Tk()
     root.lift()
     root.attributes("-topmost", True)
-    mari(root)
+    mari(root, ip)
     root.mainloop()
