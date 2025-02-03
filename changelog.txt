@@ -84,3 +84,9 @@ v3-003 (02/02/2025): Terminal + File System Update
 - Added more set-up for match IPs
 - Added log-in to mariOS 
 - Added account set-up when rebooting for the first time
+
+v3-004 (04/02/2025): Terminal + File System Update
+- Updated help command output
+- Started to add mariOS's File System
+- Added the ability to cycle through recently used commands using the Up and Down arrow keys
+- Added functionality for 'exit' command to first power off the VM, then close the game window

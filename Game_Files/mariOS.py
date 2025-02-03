@@ -14,18 +14,18 @@ BOOT_TEXT = ["Loading Boot Sector", "Running Boot Program", "Starting Kernel", "
 HELP_TEXT = ["ping [IP] | Pings the given IP to confirm it exists.\n",
              "reboot | Restart the virtual machine.\n",
              "ssh [IP] | Connects to the given IP. Further credentials may be required.\n",
-             "exit | Leave a connected machine.\n",
+             "exit | Leave a connected machine, powers off your machine, or closes the game.\n",
              "rm [name] | Deletes the given file name.\n",
              "cd [dir] | Change the working directory to the given path.\n",
              "ls | List all files in the given directory.\n",
              "cat [file] | Read the contents of the given file.\n",
-             "nc [IP] [port] | Monitor incoming and outgoing traffic from the given IP address and port.\n",
+             "nc [IP] [port] | Monitor traffic from the given IP address and port.\n",
              "hping3 [IP] --flood | Flood the target IP in a DoS Attack.\n",
              "decrypt [file] [--cipher_type] [key] | Decrypts the file using the known key.\n",
              "pwdck [IP] | Password cracker tool targeting the given IP.\n",
              "sqlinject [IP] | Collect any SQL Databases present from the target.\n",
              "dnslookup [Domain] | Get the IP address associated with the given Domain.\n",
-             "scp [src] [dst] | Copy the source file to the destination path on the local machine.",
+             "scp [src] [dst] | Copy the source file to the destination path on the local machine.\n",
              "help | View this text."]
 
 class runningApp(Enum):
@@ -50,6 +50,11 @@ class mari():
         self._proxy_username = ""
         self._proxy_password = ""
 
+        self._cd = "root$"
+
+        self._last_cmds = []
+        self._lci = 999
+
         master.title("[HACKATHON]")
         master.maxsize(480, 360)
         master.minsize(480, 360)
@@ -63,13 +68,39 @@ class mari():
         self.text.pack(side="top", fill="both", padx=0, anchor="w")
 
         master.bind('<Return>', self.handle_key)
+        master.bind('<Up>', self.cycle_up)
+        master.bind('<Down>', self.cycle_down)
 
         opsys.pack(fill="both", expand=True)
 
+    def cycle_up(self, event):
+        if self._lci == 999:
+            self._lci = len(self._last_cmds) - 1
+        elif self._lci == 0:
+            pass
+        else:
+            self._lci = self._lci - 1
+        self.line.delete(0, tk.END)
+        self.line.insert(0, self._last_cmds[self._lci])
+
+    def cycle_down(self, event):
+        if self._lci >= len(self._last_cmds) - 1:
+            self._lci = 999
+            self.line.delete(0, tk.END)
+        else:
+            self._lci = (self._lci + 1) % len(self._last_cmds)
+            self.line.delete(0, tk.END)
+            self.line.insert(0, self._last_cmds[self._lci])
+
     def handle_key(self, event):
         command = self.line.get()
-        commandList = self.line.get().split(" ")
-        self.line.delete(0, 'end')
+        self.line.delete(0, tk.END)
+        commandList = command.split(" ")
+
+        if len(self._last_cmds) == 10:
+            self._last_cmds.pop(0)
+        self._last_cmds.append(command)
+        self._lci = 999
 
         output = ""
         newstr = ""
@@ -81,6 +112,8 @@ class mari():
                     self.text.config(text="", anchor="w")
                     self.play_boot_anim()
                     self._powered = True
+                case "exit":
+                    self._root.destroy()
                 case _:
                     self.text.config(text=self.cutText(self.text['text'] +
                         f"Error: command \'{command}\' not found.\n" +
@@ -88,39 +121,39 @@ class mari():
         elif self._logIn == 0:
             # Enter Username
             if len(command) > 16 or len(command) == 0 or command.find(":") != -1:
-                output = "Invalid Username\n"
+                output = "Invalid Username"
             elif self._firstIn:
                 # Setting Username
-                output = "Enter Password:\n"
+                output = "Enter Password:"
                 self._username = command
                 self._logIn += 1
             elif command == self._username:
                 # Correct Username
-                output = "Enter Password:\n"
+                output = "Enter Password:"
                 self._logIn += 1
             else:
                 # Wrong Username
-                output = "Incorrect Username\n"
+                output = "Incorrect Username"
             newstr = self.text['text'] + "> " + command + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
             self.text.config(text=newstr, anchor="w")
         elif self._logIn == 1:
             # Enter Password
             if len(command) > 16 or len(command) == 0 or command.find(":") != -1:
-                output = "Invalid Password\n"
+                output = "Invalid Password"
             elif self._firstIn:
                 # Setting Password
-                output = f"Welcome, {self._username}.\n"
+                output = f"Welcome, {self._username}."
                 self._password = command
                 self._logIn += 1
                 self._firstIn = False
             elif command == self._password:
                 # Correct Password
-                output = f"Welcome, {self._username}.\n"
+                output = f"Welcome, {self._username}."
                 self._logIn += 1
             else:
                 # Wrong Password
-                output = "Incorrect Password\n"
+                output = "Incorrect Password"
             newstr = self.text['text'] + "> " + command + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
             self.text.config(text=newstr, anchor="w")
@@ -135,6 +168,9 @@ class mari():
                     case "help":
                         for x in HELP_TEXT:
                             output += x
+                    case "exit":
+                        self._powered = False
+                        self.text.config(text="Virtual Machine Powered Off\n", anchor="w")
             elif self._curproc == runningApp.CHAT:
                 pass
             elif self._curproc == runningApp.MAIL:
@@ -142,7 +178,7 @@ class mari():
             else:
                 output = "Something has gone VERY wrong.\n"
             # Update the terminal output
-            newstr = self.text['text'] + "> " + command + "\n" + output + ("" if output == "" else "\n")
+            newstr = self.text['text'] + self._ip + "/" + self._cd + " > " + command + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
             self.text.config(text=newstr, anchor="w")
 

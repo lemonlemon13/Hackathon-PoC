@@ -21,6 +21,8 @@ v3 - Terminal + File System Update
 - scp
 - cat
 - update help
+- exit
+[O] Add functionality to easily access recently used commands
 
 v4 - Internet Update
 [X] Add IP and inter-computer interaction
