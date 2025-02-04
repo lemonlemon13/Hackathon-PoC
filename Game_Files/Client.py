@@ -34,13 +34,13 @@ def new_client(code: str = None):
     # Get the user's name
     if code is None:
         name = input("Input Username (Max 16 Characters): ")
-        while len(name) > 16 or len(name) == 0 or name.find(":") != -1 or name == "SERVER":
+        while len(name) > 16 or len(name) == 0 or name.find(":") != -1 or name.find("|") != -1 or name == "SERVER":
             print("INVALID USERNAME")
             name = input("Input Username (Max 16 Characters): ")
         (ip, port) = LobbyCode().CodeToAddr(input("Enter Lobby Code(e.g. ABCD-EFGH): "))
     else:
         name = input("Input Username (Max 16 Characters): ")
-        while len(name) > 16 or len(name) == 0 or name.find(":") != -1 or name == "SERVER":
+        while len(name) > 16 or len(name) == 0 or name.find(":") != -1 or name.find("|") != -1 or name == "SERVER":
             print("INVALID USERNAME")
             name = input("Input Username (Max 16 Characters): ")
         (ip, port) = LobbyCode().CodeToAddr(code)
@@ -58,6 +58,12 @@ def new_client(code: str = None):
         try:
             message.prepare(name, msgType.NEW, name)
             skt.send(bytes(message.send().encode("utf-8")))
+            d = str(skt.recv(16*1024),encoding="utf-8")
+            data = GameMsg()
+            data.recv(d)
+            name_IP = data.getcmd().split("|")
+            name = name_IP[0]
+            ip = name_IP[1]
         except OSError as e:
             print("Failed to connect to Server.")
             quit_game = True

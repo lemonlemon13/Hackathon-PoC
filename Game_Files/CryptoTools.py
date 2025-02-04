@@ -101,7 +101,7 @@ class RNG():
     def next_range(self, min:int, max:int) -> int:
         """
         Returns the next random number from min (inclusive) to max (inclusive).
-        NOTE: The range will be from min (inclusive) to max (exclusive) is min = 0.
+        NOTE: The range will be from min (inclusive) to max (exclusive) if min = 0.
         """
         return (self.next() % max) + min
     

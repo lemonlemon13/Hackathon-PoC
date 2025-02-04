@@ -90,3 +90,9 @@ v3-004 (04/02/2025): Terminal + File System Update
 - Started to add mariOS's File System
 - Added the ability to cycle through recently used commands using the Up and Down arrow keys
 - Added functionality for 'exit' command to first power off the VM, then close the game window
+
+v3-005 (05/02/2025): Terminal + File System Update
+- Added IP's to the match connected to each player, each player is given their IP when their lobby names are confirmed.
+    The first two numbers in the IP are the same for all players in the same team.
+    The Team Server IPs are generated first and all generated IPs are checked to not be duplicates.
+- Fixed a minor typo in the RNG.next_range() function
