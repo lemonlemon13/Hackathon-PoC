@@ -11,7 +11,7 @@ BOOT_TEXT = ["Loading Boot Sector", "Running Boot Program", "Starting Kernel", "
              "Locating Disk Image", "Mounting File System", "Initialising Network Connections", "Preparing Drivers",
              "Preparing I/O Drivers", "Preparing System", "BOOT COMPLETE"]
 
-HELP_TEXT = ["ping [IP] | Pings the given IP to confirm it exists.\n",
+TERMINAL_HELP_TEXT = ["ping [IP] | Pings the given IP to confirm it exists.\n",
              "reboot | Restart the virtual machine.\n",
              "ssh [IP] | Connects to the given IP. Further credentials may be required.\n",
              "exit | Leave a connected machine, powers off your machine, or closes the game.\n",
@@ -32,6 +32,8 @@ class runningApp(Enum):
     TERMINAL = 0
     MAIL = 1
     CHAT = 2
+    GAME_CLOCK = 3
+    PWDRST = 4
 
 class mari():
     def __init__(self, master: tk.Tk, ip: str) -> None:
@@ -50,9 +52,10 @@ class mari():
         self._proxy_username = ""
         self._proxy_password = ""
 
-        self._cd = "root$"
+        self._fs = FileSystem(ip)
+        self._proxy_fs = None # Of Type FileSystem
 
-        self._last_cmds = []
+        self._last_cmds = [""]
         self._lci = 999
 
         master.title("[HACKATHON]")
@@ -166,11 +169,13 @@ class mari():
                         self.play_boot_anim()
                         self._powered = True
                     case "help":
-                        for x in HELP_TEXT:
+                        for x in TERMINAL_HELP_TEXT:
                             output += x
                     case "exit":
                         self._powered = False
                         self.text.config(text="Virtual Machine Powered Off\n", anchor="w")
+                    case _:
+                        output = f"Error: command \'{command}\' not found.\nPlease use \'help\' if you are having trouble.\n"
             elif self._curproc == runningApp.CHAT:
                 pass
             elif self._curproc == runningApp.MAIL:
@@ -178,7 +183,7 @@ class mari():
             else:
                 output = "Something has gone VERY wrong.\n"
             # Update the terminal output
-            newstr = self.text['text'] + self._ip + "/" + self._cd + " > " + command + "\n" + output + ("" if output == "" else "\n")
+            newstr = self.text['text'] + self._ip + "/" + self._fs._cd + "$ > " + command + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
             self.text.config(text=newstr, anchor="w")
 
@@ -217,6 +222,18 @@ class mari():
                     return s[index:]
             index -= 1
         return s
+
+class FileSystem():
+    def __init__(self, ip: str) -> None:
+        # Contains the VM's IP for identification purposes if needed, current directory, and a Directory Object for the root.
+        self._ip = ip
+        self._cd = "root/"
+
+class Directory():
+    def __init__(self):
+        # Contains parent directory, directory name, and list of files/sub-directories
+        # Files are stored as paths to where the files are actually stored irl
+        pass
 
 def bootOS(ip: str):
     root = tk.Tk()

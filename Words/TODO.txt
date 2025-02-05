@@ -15,13 +15,12 @@ v3 - Terminal + File System Update
 [X] Add backing File System to mariOS
 [X] Add default files to the File System on boot
 [X] Add commands related to the File System
-- rm
-- cd
-- ls
-- scp
-- cat
-- update help
-- exit
+- rm [X]
+- cd [X]
+- ls [X]
+- scp [X]
+- cat [X]
+- exit [O]
 [O] Add functionality to easily access recently used commands
 
 v4 - Internet Update

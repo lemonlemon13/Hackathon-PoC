@@ -48,7 +48,7 @@ v2-005 (6/12/2024): GUI Update
 
 v2-X (10/12/2024): GUI Update
 - Added functionality to allow the host of the server (the first person that joins) to be able to start the game which will open the GUI interface and stop the pregame chat.
-- Added a boot animation when the given command is 'reboot'
+- Added a boot animation when the given command is 'reboot'.
 
 ---MAJOR RELEASE---
 
@@ -71,28 +71,34 @@ Removed:
 v3-001 (26/01/2025): Terminal + File System Update
 After a "quick" break I've started development beck up again.
 
-- Added Caesar Cipher Class (untested)
-- Added Skeletion for ZigZag Cipher Class
-- Minor changes to plans
-- Added help command functionality
+- Added Caesar Cipher Class (untested).
+- Added Skeletion for ZigZag Cipher Class.
+- Minor changes to plans.
+- Added help command functionality.
 
 v3-002 (29/01/2025): Terminal + File System Update
-- Added ZigZag Cipher, Product Cipher, and Hash Classes
-- Added currently empty IP, username, and password fields to the mariOS instance
+- Added ZigZag Cipher, Product Cipher, and Hash Classes (still untested).
+- Added currently empty IP, username, and password fields to the mariOS instance.
 
 v3-003 (02/02/2025): Terminal + File System Update
-- Added more set-up for match IPs
-- Added log-in to mariOS 
-- Added account set-up when rebooting for the first time
+- Added more set-up for match IPs.
+- Added log-in to mariOS.
+- Added account set-up when rebooting for the first time.
 
 v3-004 (04/02/2025): Terminal + File System Update
-- Updated help command output
-- Started to add mariOS's File System
-- Added the ability to cycle through recently used commands using the Up and Down arrow keys
-- Added functionality for 'exit' command to first power off the VM, then close the game window
+- Updated help command output.
+- Started to add mariOS's File System.
+- Added the ability to cycle through recently used commands using the Up and Down arrow keys.
+- Added functionality for 'exit' command to first power off the VM, then close the game window.
 
 v3-005 (05/02/2025): Terminal + File System Update
 - Added IP's to the match connected to each player, each player is given their IP when their lobby names are confirmed.
     The first two numbers in the IP are the same for all players in the same team.
     The Team Server IPs are generated first and all generated IPs are checked to not be duplicates.
-- Fixed a minor typo in the RNG.next_range() function
+- Fixed a minor typo in the RNG.next_range() function.
+
+v3-006 (06/02/2025): Terminal + File System Update
+- Fixed a bug related to cycling through previous commands when no commands have been entered yet.
+- Fixed a bug that didn't swap which team new players were assigned to.
+- Added the start of the File System, it contains a FileSystem class holding the Directory objects which hold more Directory objects for paths to files.
+- Added a few example files to be added to the File System at random. Still needs more though.

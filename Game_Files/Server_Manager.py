@@ -57,6 +57,7 @@ class ServerManager():
             while temp_IP == self._teamA_Server_IP or temp_IP in self._IPs.values():
                 temp_IP = self._teamA_IP_prefix + str(self._rng.next_range(0, 255)) + "." + str(self._rng.next_range(0, 255))
         self._IPs[name] = temp_IP
+        self._flipTeams = not self._flipTeams
         
 
     def get_host(self) -> str:

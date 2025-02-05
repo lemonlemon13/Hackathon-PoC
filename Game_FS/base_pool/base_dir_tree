@@ -1,0 +1,13 @@
+root/
+    docs/
+        keys/
+            chatcode.txt
+            serverIP.txt
+    apps/
+        mail
+        chat
+        gameclock
+        forkbomb
+    sys/
+        resh
+        pwdrst
