@@ -102,3 +102,6 @@ v3-006 (06/02/2025): Terminal + File System Update
 - Fixed a bug that didn't swap which team new players were assigned to.
 - Added the start of the File System, it contains a FileSystem class holding the Directory objects which hold more Directory objects for paths to files.
 - Added a few example files to be added to the File System at random. Still needs more though.
+
+v3-007 (08/02/2025): Terminal + File System Update
+- Fleshed out the Directory and FileSystem Classes including base functionality for ls and cd commands

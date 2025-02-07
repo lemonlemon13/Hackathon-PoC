@@ -2,6 +2,8 @@
 # This script handles the GUI for clients, which communicates with Server.py
 #
 
+from __future__ import annotations
+
 import tkinter as tk
 from enum import Enum
 from Game_Files.Client import *
@@ -183,7 +185,7 @@ class mari():
             else:
                 output = "Something has gone VERY wrong.\n"
             # Update the terminal output
-            newstr = self.text['text'] + self._ip + "/" + self._fs._cd + "$ > " + command + "\n" + output + ("" if output == "" else "\n")
+            newstr = self.text['text'] + self._ip + "/" + self._fs._cur_dir + "/$ > " + command + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
             self.text.config(text=newstr, anchor="w")
 
@@ -227,13 +229,99 @@ class FileSystem():
     def __init__(self, ip: str) -> None:
         # Contains the VM's IP for identification purposes if needed, current directory, and a Directory Object for the root.
         self._ip = ip
-        self._cd = "root/"
+        self._root = Directory("root")
+        self._cur_path = self._root.get_path()
+        self._cur_dir = self._cur_path
+
+        # Adding default files
+        self.populate()
+
+    def populate(self) -> None:
+        self._root.add_dir("docs")
+        self._root.add_dir("apps")
+        self._root.add_dir("sys")
+        self._root.get_dir("docs").add_dir("keys")
+        self._root.get_dir("docs/keys").add_file("chatcode.txt")
+        self._root.get_dir("docs/keys").add_file("serverIP.txt")
+        self._root.get_dir("apps").add_file("mail")
+        self._root.get_dir("apps").add_file("chat")
+        self._root.get_dir("apps").add_file("gameclock")
+        self._root.get_dir("apps").add_file("forkbomb")
+        self._root.get_dir("sys").add_file("resh")
+        self._root.get_dir("sys").add_file("pwdrst")
 
 class Directory():
-    def __init__(self):
+    def __init__(self, name: str, parent: Directory | None = None):
         # Contains parent directory, directory name, and list of files/sub-directories
         # Files are stored as paths to where the files are actually stored irl
-        pass
+        self._name = name
+        self._parent = parent
+        self._subdirs = [] # not including .. and .
+        self._files = []
+        self._path = (parent.get_path() + "/" + name) if parent is not None else (name)
+
+    def get_name(self) -> str:
+        return self._name
+    
+    def get_parent(self) -> Directory | None:
+        return self._parent
+    
+    def get_subs(self) -> list:
+        return self._subdirs
+
+    def get_path(self) -> str:
+        return self._path
+    
+    def get_dir(self, path: str) -> Directory | None:
+        """
+        Get the Directory object in the file system from a given path.
+        Returns None if the directory does not exist.
+        """
+        # Assuming path has valid syntax
+
+        path_list = path.split("/")
+        cur_dir = self
+        first_element = True
+        for p in path_list:
+            if p == ".": # e.g. "./keys"
+                pass # Do nothing
+            elif p == ".." and cur_dir != "root": # e.g. "../apps"
+                start_dir = start_dir.get_parent()
+            elif p == ".." and cur_dir == "root": # Invalid
+                return None
+            elif p == "root" and first_element: # e.g. "root/sys"
+                # Go to the root Directory
+                while start_dir.get_parent() is not None:
+                    start_dir = start_dir.get_parent()
+            elif p == "root" and not first_element: # Invalid
+                return None
+            else:
+                # Search subdirectories for a match and go from there
+                found = False
+                for s in cur_dir.get_subs():
+                    if p == s.get_name():
+                        found = True
+                        cur_dir = s
+                        break
+                if not found:
+                    return None
+            first_element = False
+        return cur_dir
+    
+    def add_dir(self, child: str) -> None:
+        new = Directory(child, self)
+        self._subdirs.append(new)
+
+    def add_file(self, file: str) -> None:
+        self._files.append(file)
+    
+    def get_list(self) -> list[str]:
+        ans = ["..", "."] if self._parent is not None else ["."]
+        for s in self._subdirs:
+            ans.append(s.get_name())
+        for f in self._files:
+            ans.append(f)
+        return ans
 
 def bootOS(ip: str):
     root = tk.Tk()
