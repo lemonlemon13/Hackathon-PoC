@@ -19,7 +19,8 @@ TERMINAL_HELP_TEXT = ["ping [IP] | Pings the given IP to confirm it exists.\n",
              "exit | Leave a connected machine, powers off your machine, or closes the game.\n",
              "rm [name] | Deletes the given file name.\n",
              "cd [dir] | Change the working directory to the given path.\n",
-             "ls | List all files in the given directory.\n",
+             "ls | List all files in the current directory.\n",
+             "mkdir [name] | Makes a new sub-directory in the current directory.\n"
              "cat [file] | Read the contents of the given file.\n",
              "nc [IP] [port] | Monitor traffic from the given IP address and port.\n",
              "hping3 [IP] --flood | Flood the target IP in a DoS Attack.\n",
@@ -159,7 +160,7 @@ class mari():
             else:
                 # Wrong Password
                 output = "Incorrect Password"
-            newstr = self.text['text'] + "> " + command + "\n" + output + ("" if output == "" else "\n")
+            newstr = self.text['text'] + "> " + (len(command) * "*") + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
             self.text.config(text=newstr, anchor="w")
         else:
@@ -173,11 +174,33 @@ class mari():
                     case "help":
                         for x in TERMINAL_HELP_TEXT:
                             output += x
+                    case "cd":
+                        if len(commandList) != 2:
+                            output = f"Usage: cd [path]"
+                        else:
+                            if self._fs.cd(commandList[1]):
+                                output = f"Invalid: Path \"{commandList[1]}\" does not exist"
+                    case "ls":
+                        if len(commandList) != 1:
+                            output = f"Usage: ls"
+                        else:
+                            output = self._fs.ls()
+                    case "mkdir":
+                        if len(commandList) != 2:
+                            output = "Usage: mkdir [name]"
+                        else:
+                            err = self._fs.mkdir(commandList[1])
+                            if (err == 1):
+                                output = "Invalid: Subdirectory cannot have the same name as the root directory."
+                            if (err == 2):
+                                output = "Invalid: Subdirectory of the same name already exists."
+                            if (err == 3):
+                                output = "Invalid: Subdirectory must not contain only whitespace."
                     case "exit":
                         self._powered = False
                         self.text.config(text="Virtual Machine Powered Off\n", anchor="w")
                     case _:
-                        output = f"Error: command \'{command}\' not found.\nPlease use \'help\' if you are having trouble.\n"
+                        output = f"Error: command \'{command}\' not found.\nPlease use \'help\' if you are having trouble."
             elif self._curproc == runningApp.CHAT:
                 pass
             elif self._curproc == runningApp.MAIL:
@@ -185,7 +208,7 @@ class mari():
             else:
                 output = "Something has gone VERY wrong.\n"
             # Update the terminal output
-            newstr = self.text['text'] + self._ip + "/" + self._fs._cur_dir + "/$ > " + command + "\n" + output + ("" if output == "" else "\n")
+            newstr = self.text['text'] + self._ip + "/" + self._fs._cur_path + "/$ > " + command + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
             self.text.config(text=newstr, anchor="w")
 
@@ -231,7 +254,7 @@ class FileSystem():
         self._ip = ip
         self._root = Directory("root")
         self._cur_path = self._root.get_path()
-        self._cur_dir = self._cur_path
+        self._cur_dir = self._root
 
         # Adding default files
         self.populate()
@@ -241,6 +264,10 @@ class FileSystem():
         self._root.add_dir("apps")
         self._root.add_dir("sys")
         self._root.get_dir("docs").add_dir("keys")
+        self._root.get_dir("docs").add_file("dontreadme.txt")
+        self._root.get_dir("docs").add_file("groceries.txt")
+        self._root.get_dir("docs").add_file("lorem_ipsum.txt")
+        self._root.get_dir("docs").add_file("reference_you_know.txt")
         self._root.get_dir("docs/keys").add_file("chatcode.txt")
         self._root.get_dir("docs/keys").add_file("serverIP.txt")
         self._root.get_dir("apps").add_file("mail")
@@ -249,6 +276,32 @@ class FileSystem():
         self._root.get_dir("apps").add_file("forkbomb")
         self._root.get_dir("sys").add_file("resh")
         self._root.get_dir("sys").add_file("pwdrst")
+
+    def cd(self, path: str) -> int:
+        dir = self._cur_dir.get_dir(path)
+        if dir is None:
+            return 1
+        self._cur_dir = dir
+        self._cur_path = dir.get_path()
+        return 0
+    
+    def ls(self) -> str:
+        l = self._cur_dir.get_list()
+        ans = ""
+        for x in l:
+            ans += x + "\n"
+        return ans[:-1]
+    
+    def mkdir(self, name: str) -> int:
+        if name == "root":
+            return 1
+        if name == "":
+            return 3
+        for s in self._cur_dir.get_subs():
+            if name == s.get_name():
+                return 2
+        self._cur_dir.add_dir(name)
+        return 0
 
 class Directory():
     def __init__(self, name: str, parent: Directory | None = None):
@@ -278,7 +331,7 @@ class Directory():
         Returns None if the directory does not exist.
         """
         # Assuming path has valid syntax
-
+        path = path.removesuffix("/") # Remove the last '/' if they were given
         path_list = path.split("/")
         cur_dir = self
         first_element = True
@@ -286,15 +339,13 @@ class Directory():
             if p == ".": # e.g. "./keys"
                 pass # Do nothing
             elif p == ".." and cur_dir != "root": # e.g. "../apps"
-                start_dir = start_dir.get_parent()
+                cur_dir = cur_dir.get_parent()
             elif p == ".." and cur_dir == "root": # Invalid
                 return None
             elif p == "root" and first_element: # e.g. "root/sys"
                 # Go to the root Directory
-                while start_dir.get_parent() is not None:
-                    start_dir = start_dir.get_parent()
-            elif p == "root" and not first_element: # Invalid
-                return None
+                while cur_dir.get_parent() is not None:
+                    cur_dir = cur_dir.get_parent()
             else:
                 # Search subdirectories for a match and go from there
                 found = False

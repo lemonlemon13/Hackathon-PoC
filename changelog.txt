@@ -105,3 +105,7 @@ v3-006 (06/02/2025): Terminal + File System Update
 
 v3-007 (08/02/2025): Terminal + File System Update
 - Fleshed out the Directory and FileSystem Classes including base functionality for ls and cd commands
+
+v3-008 (08/02/2025): Terminal + File System Update
+Next update is likely v3 for real, all that's left is "rm" and "cat"
+- Added terminal functionality to cd, ls, and mkdir commands
