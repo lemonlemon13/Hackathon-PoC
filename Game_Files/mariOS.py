@@ -3,6 +3,7 @@
 #
 
 from __future__ import annotations
+import os
 
 import tkinter as tk
 from enum import Enum
@@ -195,7 +196,22 @@ class mari():
                             if (err == 2):
                                 output = "Invalid: Subdirectory of the same name already exists."
                             if (err == 3):
-                                output = "Invalid: Subdirectory must not contain only whitespace."
+                                output = f"Invalid: Subdirectory cannot have the name {commandList[1]}"
+                    case "rm":
+                        if len(commandList) != 2:
+                            output = "Usage: rm [name]"
+                        else:
+                            if self._fs.rm(commandList[1]):
+                                output = f"File or Directory {commandList[1]} couldn't be found."
+                    case "cat":
+                        if len(commandList) != 2:
+                            output = "Usage: cat [name]"
+                        else:
+                            output = self._fs.cat(commandList[1])
+                            if output == "1":
+                                output = f"File or cannot be read correctly, must end with '.txt'"
+                            elif output == "2":
+                                output = f"File {commandList[1]} couldn't be found."
                     case "exit":
                         self._powered = False
                         self.text.config(text="Virtual Machine Powered Off\n", anchor="w")
@@ -208,7 +224,7 @@ class mari():
             else:
                 output = "Something has gone VERY wrong.\n"
             # Update the terminal output
-            newstr = self.text['text'] + self._ip + "/" + self._fs._cur_path + "/$ > " + command + "\n" + output + ("" if output == "" else "\n")
+            newstr = self.text['text'] + self._ip + "/" + self._fs._cur_path + "$ > " + command + "\n" + output + ("" if output == "" else "\n")
             newstr = self.cutText(newstr)
             self.text.config(text=newstr, anchor="w")
 
@@ -295,13 +311,33 @@ class FileSystem():
     def mkdir(self, name: str) -> int:
         if name == "root":
             return 1
-        if name == "":
+        if name == "" or name.find("-") != 1:
             return 3
         for s in self._cur_dir.get_subs():
             if name == s.get_name():
                 return 2
         self._cur_dir.add_dir(name)
         return 0
+    
+    def rm(self, name: str) -> int:
+        for f in self._cur_dir.get_files():
+            if f == name:
+                self._cur_dir._files.remove(f)
+                return 0
+        for s in self._cur_dir.get_subs():
+            if s.get_name() == name:
+                self._cur_dir._subdirs.remove(s)
+                return 0
+        return 1
+
+    def cat(self, name: str) -> str:
+        path = "Game_FS/" + self._cur_path.replace("/", "-") + name
+        if path[-4:] != ".txt":
+            return "1"
+        if not os.path.isfile(path):
+            return "2"
+        f = open(path, "r")
+        return "\n" + f.read() + "\n"
 
 class Directory():
     def __init__(self, name: str, parent: Directory | None = None):
@@ -311,7 +347,7 @@ class Directory():
         self._parent = parent
         self._subdirs = [] # not including .. and .
         self._files = []
-        self._path = (parent.get_path() + "/" + name) if parent is not None else (name)
+        self._path = (parent.get_path() + name + "/") if parent is not None else (name + "/")
 
     def get_name(self) -> str:
         return self._name
@@ -321,6 +357,9 @@ class Directory():
     
     def get_subs(self) -> list:
         return self._subdirs
+
+    def get_files(self) -> list:
+        return self._files
 
     def get_path(self) -> str:
         return self._path
@@ -368,9 +407,9 @@ class Directory():
     
     def get_list(self) -> list[str]:
         ans = ["..", "."] if self._parent is not None else ["."]
-        for s in self._subdirs:
+        for s in self.get_subs():
             ans.append(s.get_name())
-        for f in self._files:
+        for f in self.get_files():
             ans.append(f)
         return ans
 

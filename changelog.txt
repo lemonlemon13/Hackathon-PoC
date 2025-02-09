@@ -109,3 +109,34 @@ v3-007 (08/02/2025): Terminal + File System Update
 v3-008 (08/02/2025): Terminal + File System Update
 Next update is likely v3 for real, all that's left is "rm" and "cat"
 - Added terminal functionality to cd, ls, and mkdir commands
+
+v3-X (09/02/2025): Terminal + File System Update
+- Re-arranged GameFS folder files.
+- Added functionality for rm and cat commands.
+
+---MAJOR RELEASE---
+
+v3 (09/02/2025): Terminal + File System Update
+First real update, now there's a GUI to actually play the game with the existing parts becoming the pre-game lobby chat.
+Please see the above BETA release notes for more details.
+
+Added:
+- Added in-game IP generation for each player and team servers.
+- Added a File System for players to store important files and applications.
+- Added terminal command functionality to interact with the File System.
+    - rm
+    - cd
+    - ls
+    - cat
+    - mkdir
+- Added the ability to quickly access recently used commands via the arrow keys.
+- Added additional Cipher classes for later updates.
+- Added the requirement to log-in to the Virtual Machine, players are prompted to create a username and password the first time this happens.
+
+Changed:
+- Updated text from the "help" command.
+- Made the "exit" command turn off the Virtual Machine or close the game if already off.
+- Fixed a few bugs and typos.
+
+Removed:
+- Some plans have been scrapped or reworked.
